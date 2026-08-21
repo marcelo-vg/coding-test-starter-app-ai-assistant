@@ -29,6 +29,27 @@ export interface Gig {
   description: string;
 }
 
+/** Query parameters for `GET /api/gigs`. */
+export interface GigQuery {
+  /** `null` means "every category". */
+  category: GigCategory | null;
+  remoteOnly: boolean;
+  /** 1-based. */
+  page: number;
+  pageSize: number;
+}
+
+/** Response body for `GET /api/gigs` — one page of the filtered listing. */
+export interface GigPage {
+  gigs: Gig[];
+  page: number;
+  pageSize: number;
+  /** Gigs matching the filters across every page, not just this one. */
+  total: number;
+  /** Every category in the catalogue, regardless of the current filters. */
+  categories: GigCategory[];
+}
+
 export type ChatRole = 'user' | 'assistant';
 
 export interface ChatMessage {

@@ -1,6 +1,16 @@
-import type { Gig } from '@shared/types';
+import type { GigPage, GigQuery } from '@shared/types';
 import { request } from '../api/request.ts';
 
-export function fetchGigs(): Promise<Gig[]> {
-  return request<{ gigs: Gig[] }>('/api/gigs').then((body) => body.gigs);
+export const PAGE_SIZE = 10;
+
+export function fetchGigPage(query: GigQuery, signal?: AbortSignal): Promise<GigPage> {
+  const params = new URLSearchParams({
+    page: String(query.page),
+    pageSize: String(query.pageSize),
+  });
+
+  if (query.category) params.set('category', query.category);
+  if (query.remoteOnly) params.set('remoteOnly', 'true');
+
+  return request<GigPage>(`/api/gigs?${params}`, { signal });
 }

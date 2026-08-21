@@ -121,6 +121,38 @@ button:disabled {
   list-style: none;
 }
 
+/* Dim the current page while the next one is loading. */
+.listing__items--stale {
+  opacity: 0.55;
+  transition: opacity 120ms ease-in;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pagination__button {
+  padding: 8px 14px;
+  font-weight: 500;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.pagination__button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pagination__position {
+  font-size: 13px;
+  color: var(--muted);
+}
+
 .gig-card {
   padding: 16px;
   background: var(--surface);
