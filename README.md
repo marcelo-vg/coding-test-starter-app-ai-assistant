@@ -38,9 +38,29 @@ client/src/
 
 ### `GET /api/gigs`
 
+Filtering and pagination both happen on the server, so the client only ever
+holds the page it is showing.
+
+| Parameter    | Default | Notes                                          |
+| ------------ | ------- | ---------------------------------------------- |
+| `category`   | all     | Must be a known category, or the request 400s  |
+| `remoteOnly` | `false` | `true` to exclude on-site gigs                 |
+| `page`       | `1`     | 1-based                                        |
+| `pageSize`   | `10`    | Capped at 50                                   |
+
 ```json
-{ "gigs": [{ "id": "gig-001", "title": "…", "category": "Warehouse", "payRate": 24, "location": "Denver, CO", "remote": false, "postedAt": "2026-08-10", "description": "…" }] }
+{
+  "gigs": [{ "id": "gig-001", "title": "…", "category": "Warehouse", "payRate": 24, "location": "Denver, CO", "remote": false, "postedAt": "2026-08-10", "description": "…" }],
+  "page": 1,
+  "pageSize": 10,
+  "total": 30,
+  "categories": ["Admin", "Cleaning", "Customer Support", "Delivery", "Events", "Hospitality", "Retail", "Warehouse"]
+}
 ```
+
+`total` counts every gig matching the filters, not just the current page.
+`categories` lists the whole catalogue so the filter dropdown does not shrink to
+whatever happens to be on screen.
 
 ### `POST /api/chat`
 
@@ -48,13 +68,12 @@ client/src/
 { "messages": [{ "role": "user", "content": "hello" }] }
 ```
 
-Responds with the assistant's reply:
+Streams the assistant's reply back as `text/plain`, a chunk at a time.
 
-```json
-{ "message": { "role": "assistant", "content": "Hi! How can I help?" } }
-```
-
-Errors come back as `{ "error": "…" }` with a 4xx or 5xx status.
+Errors come back as `{ "error": "…" }` with a 4xx or 5xx status. The response
+status is held back until the first chunk arrives, so a request that fails
+before the reply starts is still reported as JSON; a failure part-way through a
+reply can only close the stream early.
 
 ## Scripts
 
