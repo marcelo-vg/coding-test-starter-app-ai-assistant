@@ -62,11 +62,6 @@ export interface ChatRequest {
   messages: ChatMessage[];
 }
 
-/** Success response from `POST /api/chat`. */
-export interface ChatResponse {
-  message: ChatMessage;
-}
-
 /** Shape of every error response from the API. */
 export interface ApiError {
   error: string;

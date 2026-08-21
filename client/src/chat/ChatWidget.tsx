@@ -8,6 +8,10 @@ export function ChatWidget() {
   const { messages, isSending, error, send } = useChat();
   const transcriptRef = useRef<HTMLDivElement>(null);
 
+  // Once the first chunk lands the reply itself is visible, so the placeholder
+  // only belongs on screen while the user's message is still the last one.
+  const isWaitingForReply = isSending && messages.at(-1)?.role === 'user';
+
   // Keep the newest message in view as the conversation grows.
   useEffect(() => {
     const transcript = transcriptRef.current;
@@ -56,7 +60,7 @@ export function ChatWidget() {
           </div>
         ))}
 
-        {isSending && <div className="bubble bubble--assistant chat__typing">Thinking…</div>}
+        {isWaitingForReply && <div className="bubble bubble--assistant chat__typing">Thinking…</div>}
         {error && <p className="chat__error">{error}</p>}
       </div>
 

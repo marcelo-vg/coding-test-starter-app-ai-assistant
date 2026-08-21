@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import type { ChatMessage } from '@shared/types';
-import { sendChat } from './api.ts';
+import { streamChat } from './api.ts';
 
 interface Chat {
   messages: ChatMessage[];
@@ -8,6 +8,8 @@ interface Chat {
   error: string | null;
   send: (text: string) => Promise<void>;
 }
+
+const EMPTY_REPLY = "Sorry, I didn't catch that. Could you try again?";
 
 /** Owns the conversation and the request lifecycle for a single chat session. */
 export function useChat(): Chat {
@@ -22,9 +24,19 @@ export function useChat(): Chat {
     setIsSending(true);
     setError(null);
 
+    // The reply is rebuilt from scratch on every chunk so that the transcript
+    // always holds one assistant message, however many chunks arrive.
+    let reply = '';
+
     try {
-      const reply = await sendChat(history);
-      setMessages([...history, reply]);
+      await streamChat(history, (chunk) => {
+        reply += chunk;
+        setMessages([...history, { role: 'assistant', content: reply }]);
+      });
+
+      if (!reply) {
+        setMessages([...history, { role: 'assistant', content: EMPTY_REPLY }]);
+      }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Something went wrong.');
     } finally {

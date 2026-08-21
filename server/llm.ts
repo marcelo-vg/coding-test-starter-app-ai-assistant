@@ -15,27 +15,22 @@ You are talking to someone who is looking at a listing of gigs right now, but yo
 Keep your replies short and conversational.`;
 
 /**
- * Sends a conversation to the LLM and returns its reply.
+ * Sends a conversation to the LLM and yields the reply as it arrives.
  *
  * Throws if the request fails — callers are responsible for turning that into
  * an HTTP response.
  */
-export async function completeChat(messages: ChatMessage[]): Promise<ChatMessage> {
-  const response = await anthropic.messages.create({
+export async function* streamChat(messages: ChatMessage[]): AsyncGenerator<string> {
+  const stream = anthropic.messages.stream({
     model: config.model,
     max_tokens: MAX_TOKENS,
     system: SYSTEM_PROMPT,
     messages: messages.map(({ role, content }) => ({ role, content })),
   });
 
-  const text = response.content
-    .filter((block) => block.type === 'text')
-    .map((block) => block.text)
-    .join('\n')
-    .trim();
-
-  return {
-    role: 'assistant',
-    content: text || "Sorry, I didn't catch that. Could you try again?",
-  };
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield event.delta.text;
+    }
+  }
 }
