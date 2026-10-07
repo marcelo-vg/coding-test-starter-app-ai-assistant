@@ -1,4 +1,4 @@
-import type { Gig } from '@shared/types';
+import type { Gig } from '../types';
 
 const postedFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',

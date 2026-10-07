@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import type { ChatMessage } from '@shared/types';
+import type { ChatMessage } from '../types';
 import { streamChat } from './api.ts';
 
 interface Chat {

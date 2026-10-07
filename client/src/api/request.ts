@@ -1,4 +1,4 @@
-import type { ApiError } from '@shared/types';
+import type { ApiError } from '../types';
 
 /**
  * Thin wrapper around fetch for our JSON API. Rejects with the server's error

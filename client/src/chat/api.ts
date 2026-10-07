@@ -1,4 +1,4 @@
-import type { ApiError, ChatMessage, ChatRequest } from '@shared/types';
+import type { ApiError, ChatMessage, ChatRequest } from '../types';
 
 /**
  * Posts a conversation to the API and invokes `onText` with each chunk of the

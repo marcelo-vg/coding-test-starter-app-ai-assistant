@@ -1,4 +1,4 @@
-import type { GigPage, GigQuery } from '@shared/types';
+import type { GigPage, GigQuery } from '../types';
 import { request } from '../api/request.ts';
 
 export const PAGE_SIZE = 10;

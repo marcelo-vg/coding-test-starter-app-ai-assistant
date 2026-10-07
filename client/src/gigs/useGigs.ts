@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { GigPage } from '@shared/types';
+import type { GigPage } from '../types';
 import { fetchGigPage, PAGE_SIZE } from './api.ts';
 import type { GigFilters } from './filters.ts';
 

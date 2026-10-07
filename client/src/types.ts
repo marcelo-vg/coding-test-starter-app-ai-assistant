@@ -1,8 +1,8 @@
 /**
- * Types shared by the Express server and the React client.
+ * Types for the JSON API served by the FastAPI backend.
  *
- * This file must stay type-only — it is imported with `import type` on both
- * sides, so anything with a runtime value would not survive the client build.
+ * These mirror the Pydantic models in `backend/app/models.py`, which are the
+ * source of truth — keep the two in step when the API changes.
  */
 
 export type GigCategory =
@@ -60,6 +60,8 @@ export interface ChatMessage {
 /** Request body for `POST /api/chat`. */
 export interface ChatRequest {
   messages: ChatMessage[];
+  /** Continue a stored conversation; omit to start a new one. */
+  conversationId?: string;
 }
 
 /** Shape of every error response from the API. */

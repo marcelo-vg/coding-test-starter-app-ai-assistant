@@ -1,4 +1,4 @@
-import type { GigCategory } from '@shared/types';
+import type { GigCategory } from '../types';
 
 export interface GigFilters {
   /** `null` means "every category". */

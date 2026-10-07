@@ -1,4 +1,4 @@
-import type { GigCategory } from '@shared/types';
+import type { GigCategory } from '../types';
 import type { GigFilters } from './filters.ts';
 
 interface GigFilterBarProps {

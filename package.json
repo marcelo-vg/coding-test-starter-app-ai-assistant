@@ -6,20 +6,13 @@
   "description": "Gig listing page with an embedded conversational assistant.",
   "scripts": {
     "dev": "concurrently --names server,client --prefix-colors magenta,cyan \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:server": "tsx watch server/index.ts",
+    "dev:server": "uv run --directory backend python -m app",
     "dev:client": "npm --prefix client run dev",
-    "typecheck": "tsc --noEmit && npm --prefix client run typecheck"
-  },
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.116.0",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "setup": "uv sync --directory backend && npm --prefix client install",
+    "test": "uv run --directory backend pytest",
+    "typecheck": "npm --prefix client run typecheck"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
-    "@types/node": "^26.2.0",
-    "concurrently": "^10.0.4",
-    "tsx": "^4.23.12",
-    "typescript": "^7.0.2"
+    "concurrently": "^10.0.4"
   }
 }
