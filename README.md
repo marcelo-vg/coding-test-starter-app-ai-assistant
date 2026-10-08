@@ -33,6 +33,7 @@ backend/            FastAPI API (Python, managed with uv)
   app/conversations.py  Stored conversations and messages
   app/agent.py        LLM client and the tool-calling loop
   app/tools.py        Tool registry (validates the model's tool inputs)
+  app/assistant_tools.py  The assistant's tools, starting with a date tool
   app/context.py      Trims the history sent to the model
   app/routes/         Route handlers
   tests/              pytest suite

@@ -108,3 +108,15 @@ def test_tool_call_is_run_and_its_result_sent_back(monkeypatch):
         {"type": "tool_result", "tool_use_id": "t1", "content": "echo: yo", "is_error": False}
     ]
     assert calls[0]["tools"][0]["name"] == "echo"
+
+
+def test_assistant_ships_with_a_date_tool():
+    from datetime import date
+
+    from app import assistant_tools  # noqa: F401
+    from app.tools import registry
+
+    result = registry.run("get_current_date", {})
+
+    assert (result.content, result.is_error) == (date.today().isoformat(), False)
+    assert "get_current_date" in [schema["name"] for schema in registry.schemas()]

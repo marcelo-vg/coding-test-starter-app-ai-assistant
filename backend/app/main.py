@@ -3,7 +3,7 @@ from typing import AsyncIterator
 
 from fastapi import FastAPI
 
-from app import agent
+from app import agent, assistant_tools  # noqa: F401 - registers the assistant's tools
 from app.config import load_settings
 from app.db import init_db
 from app.errors import register_error_handlers
